@@ -1,0 +1,10 @@
+# Normalize line endings
+* text=auto
+
+# Shell scripts must keep LF (used inside Docker containers)
+*.sh text eol=lf
+mvnw text eol=lf
+
+# Windows scripts keep CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
