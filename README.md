@@ -1,4 +1,4 @@
-# Zosh Airline — Airline GDS Microservices Platform
+# Ben Airline — Airline GDS Microservices Platform
 
 A production-grade **Airline Global Distribution System (GDS)** built with Spring Boot microservices, event-driven architecture, and cloud-native patterns, plus a React (Vite) web frontend. The platform covers the complete airline booking lifecycle — from flight search and seat selection through payment processing and passenger notifications.
 
@@ -29,7 +29,7 @@ A production-grade **Airline Global Distribution System (GDS)** built with Sprin
 ├── backend/                             # Spring Boot microservices (Maven multi-module)
 │   ├── pom.xml                          # Root parent POM — version management
 │   ├── common-lib/                      # Shared DTOs, enums, events, exceptions
-│   │   └── src/main/java/com/zosh/common_lib/
+│   │   └── src/main/java/com/ben/common_lib/
 │   │       ├── dto/                     # Shared data transfer objects
 │   │       ├── embeddable/              # JPA embeddables (ContactInfo, Address, GeoCode)
 │   │       ├── enums/                   # Shared enums (BookingStatus, CabinClassType, ...)
@@ -68,7 +68,7 @@ A production-grade **Airline Global Distribution System (GDS)** built with Sprin
 │   ├── docker-compose.yml               # Full stack deployment
 │   ├── docker-compose.dev.yml           # Development stack
 │   ├── init-databases.sql               # Creates one MySQL database per service
-│   └── keycloak/realm-export.json       # zosh-airline realm, clients and roles
+│   └── keycloak/realm-export.json       # ben-airline realm, clients and roles
 └── README.md
 ```
 
@@ -647,9 +647,9 @@ cd Airline-Mircoservice
 # 2. Set required environment variables (copy and fill in)
 cp docker/.env.example docker/.env
 
-# 3. Build all service JARs
+# 3. Build all service Docker images locally (Jib — no Dockerfile needed)
 cd backend
-mvn clean package -DskipTests
+mvn clean package jib:dockerBuild -DskipTests
 cd ..
 
 # 4. Start all services
@@ -667,9 +667,13 @@ The API is available at `http://localhost:5000`.
 # Start identity, data, messaging, discovery, and configuration infrastructure
 docker compose -f docker/docker-compose.yml up -d keycloak keycloakdb userdb redis kafka config-server service-registry
 
+# Create all service databases in your local MySQL (localhost:3306), once
+mysql -u root -p < docker/init-databases.sql
+
 # Then start individual services from their directory
+# (DB_PASSWORD = your local MySQL root password; defaults to "root")
 cd backend/services/booking-service
-mvn spring-boot:run
+DB_PASSWORD=<your-mysql-password> mvn spring-boot:run
 ```
 
 ### Frontend
@@ -684,7 +688,13 @@ npm run lint       # ESLint
 
 ### Environment Variables
 
+Copy `docker/.env.example` to `docker/.env` (never commit `.env`). Docker Compose reads it
+automatically; for services started with `mvn spring-boot:run`, export the same variables.
+
 ```env
+# Database (local runs; Docker Compose sets its own)
+DB_PASSWORD=<your-local-mysql-root-password>
+
 # Email (Gmail SMTP)
 MAIL_USERNAME=your-email@gmail.com
 MAIL_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx   # Gmail App Password (not regular password)
@@ -706,13 +716,13 @@ STRIPE_API_KEY=<your-stripe-secret-key>
 KEYCLOAK_ADMIN=admin
 KEYCLOAK_ADMIN_PASSWORD=replace-this-password
 INTERNAL_API_KEY=replace-with-a-long-random-shared-secret
-KEYCLOAK_ISSUER_URI=http://localhost:8180/realms/zosh-airline
-KEYCLOAK_JWK_SET_URI=http://localhost:8180/realms/zosh-airline/protocol/openid-connect/certs
+KEYCLOAK_ISSUER_URI=http://localhost:8180/realms/ben-airline
+KEYCLOAK_JWK_SET_URI=http://localhost:8180/realms/ben-airline/protocol/openid-connect/certs
 KEYCLOAK_CLIENT_ID=airline-api
 ```
 
 The main Compose file imports `docker/keycloak/realm-export.json`, which creates
-the `zosh-airline` realm, the `airline-api` resource client, the public PKCE frontend
+the `ben-airline` realm, the `airline-api` resource client, the public PKCE frontend
 client, and the three application roles. Create users in Keycloak (or enable the desired
 registration flow) and assign `ROLE_SYSTEM_ADMIN` or `ROLE_AIRLINE_OWNER` where needed;
 users without either role are mapped to `ROLE_CUSTOMER` by the profile service.
