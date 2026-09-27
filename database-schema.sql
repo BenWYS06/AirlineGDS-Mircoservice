@@ -242,7 +242,6 @@ CREATE TABLE `seats` (
   `seat_pitch` int DEFAULT NULL,
   `seat_row` int NOT NULL,
   `seat_width` int DEFAULT NULL,
-  `cabin_class_id` bigint DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `seat_map_id` bigint NOT NULL,
   `updated_at` datetime(6) NOT NULL,
@@ -252,9 +251,7 @@ CREATE TABLE `seats` (
   `updated_by` varchar(255) DEFAULT NULL,
   `seat_type` enum('AISLE','EXTRA_LEGROOM','MIDDLE','WINDOW') NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_seat_cabinclass` (`cabin_class_id`),
   KEY `FKn0lcnvvcrbb3wn5s6ksyc1v9q` (`seat_map_id`),
-  CONSTRAINT `fk_seat_cabinclass` FOREIGN KEY (`cabin_class_id`) REFERENCES `cabin_classes` (`id`),
   CONSTRAINT `FKn0lcnvvcrbb3wn5s6ksyc1v9q` FOREIGN KEY (`seat_map_id`) REFERENCES `seat_maps` (`id`)
 );
 
@@ -265,10 +262,7 @@ CREATE TABLE `seat_instances` (
   `is_booked` bit(1) NOT NULL,
   `premium_surcharge` double DEFAULT NULL,
   `created_at` datetime(6) DEFAULT NULL,
-  `flight_id` bigint NOT NULL,
-  `flight_instance_cabin_id` bigint DEFAULT NULL,
-  `flight_instance_id` bigint DEFAULT NULL,
-  `flight_schedule_id` bigint DEFAULT NULL,
+  `flight_instance_cabin_id` bigint NOT NULL,
   `seat_id` bigint NOT NULL,
   `updated_at` datetime(6) DEFAULT NULL,
   `version` bigint DEFAULT NULL,
