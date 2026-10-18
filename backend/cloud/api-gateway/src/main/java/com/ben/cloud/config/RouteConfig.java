@@ -1,6 +1,7 @@
 package com.ben.cloud.config;
 
 import com.ben.cloud.security.UserContextGatewayFilter;
+import com.ben.common_lib.security.TrustedHeaders;
 import org.springframework.cloud.gateway.server.mvc.filter.LoadBalancerFilterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.function.RequestPredicates;
 import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
 @Configuration
@@ -20,6 +22,26 @@ public class RouteConfig {
         this.userContextFilter = userContextFilter;
     }
 
+    // Public route: VNPay's servers call the payment IPN without a user JWT, so it skips
+    // userContextFilter. Ordered before paymentServiceRoutes ("/api/payments/**"), which requires a user.
+    @Bean
+    @Order(1)
+    public RouterFunction<ServerResponse> vnPayIpnRoute() {
+        return GatewayRouterFunctions.route("payment-vnpay-ipn-route")
+                .route(RequestPredicates.GET("/api/payments/vnpay/ipn"), HandlerFunctions.http())
+                .filter(LoadBalancerFilterFunctions.lb("payment-service"))
+                // No user on this call: drop any client-sent identity headers
+                .before(request -> ServerRequest.from(request)
+                        .headers(headers -> {
+                            headers.remove(TrustedHeaders.USER_ID);
+                            headers.remove(TrustedHeaders.USER_EMAIL);
+                            headers.remove(TrustedHeaders.USER_ROLES);
+                            headers.remove(TrustedHeaders.INTERNAL_API_KEY);
+                        })
+                        .build())
+                .build();
+    }
+
     // Admin-only routes. Authorization is enforced by SecurityConfig before routing.
 
     @Bean
@@ -28,9 +50,9 @@ public class RouteConfig {
         return GatewayRouterFunctions.route("admin-location-routes")
                 .route(RequestPredicates.POST("/api/cities/**"), HandlerFunctions.http())
                 .route(RequestPredicates.POST("/api/airports/**"), HandlerFunctions.http())
-                .filter(LoadBalancerFilterFunctions.lb("location-service"))
+                .filter(LoadBalancerFilterFunctions.lb("location-service"))   // call eureka for host:ip that service
 //                .filter(CircuitBreakerFilterFunctions.circuitBreaker("location-service-cb", URI.create("forward:/fallback")))
-                .before(userContextFilter::enrich)
+                .before(userContextFilter::enrich)      // this run firstly to convert keycloak's info into X-... attached on request's Header.
                 .build();
     }
 
