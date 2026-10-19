@@ -38,7 +38,6 @@ public class BookingResponse {
 
     private List<PassengerResponse> passengers;
     private List<SeatInstanceResponse> seatInstances;
-    private PaymentLinkResponse payment;
     private List<FlightCabinAncillaryResponse> ancillaries;
     private List<FlightMealResponse> meals;
     private List<TicketResponse> tickets;

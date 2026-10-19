@@ -16,9 +16,6 @@ public class PaymentInitiateResponse {
     private PaymentGateway gateway;
     private String transactionId;
 
-    // Razorpay specific fields
-    private String razorpayOrderId;
-
     private Double amount;
     private String currency;
     private String description;
