@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+
+//This purpose of Circuit-Breaker fall-back when any Service down
 @RestController
 public class FallbackController {
 
