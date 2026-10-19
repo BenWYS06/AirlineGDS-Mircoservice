@@ -32,22 +32,24 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/health", "/actuator/info", "/fallback").permitAll()
+                        // VNPay server-to-server callback: no JWT, trust comes from its HMAC signature
+                        .requestMatchers(HttpMethod.GET, "/api/payments/vnpay/ipn").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/cities/**", "/api/airports/**")
                         .hasRole("SYSTEM_ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/airlines")
                         .hasRole("SYSTEM_ADMIN")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt(
-                        jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
+                        jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))  // -> this call keycloak uri to validate token and store claim in securityContext.We just need add GrantedAuthorities
                 .build();
     }
 
+    //Entire below code just for get role from keycloak's access-token and add in SecurityContext.
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter(
             @Value("${security.keycloak.client-id}") String clientId
     ) {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setPrincipalClaimName("preferred_username");
         converter.setJwtGrantedAuthoritiesConverter(jwt -> extractRoles(jwt, clientId));
         return converter;
     }
