@@ -9,6 +9,6 @@ public class HomeController {
 
     @GetMapping
     public ResponseEntity<?> HomeTest() {
-        return ResponseEntity.ok("Welcome to user !");
+        return ResponseEntity.ok("Welcome to User !");
     }
 }
