@@ -1,0 +1,111 @@
+spring:
+  application:
+    name: booking-service
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  # PostgreSQL (docker-compose.dev.yml: gds-postgres-dev on localhost:5432)
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/airline_booking_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:postgres}}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}   # schema is owned by Flyway (db/migration)
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: booking-service-group
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+#      properties:
+#        spring.json.trusted.packages: com.ben.common_lib.event
+
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+        group:
+          enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 80
+        slow-call-duration-threshold: 3000ms
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        register-health-indicator: true
+        record-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - feign.FeignException
+        ignore-exceptions:
+          - com.ben.common_lib.exception.UserException
+          - com.ben.common_lib.exception.AirportException
+          # 409 = "seat already taken": a normal business answer, not a sign seat-service is down
+          - feign.FeignException$Conflict
+    instances:
+      AncillaryClient:
+        base-config: default
+      FlightClient:
+        base-config: default
+        failure-rate-threshold: 40
+        wait-duration-in-open-state: 45s
+      PaymentClient:
+        base-config: default
+        failure-rate-threshold: 30
+        wait-duration-in-open-state: 60s
+        minimum-number-of-calls: 5
+      PricingClient:
+        base-config: default
+      SeatClient:
+        base-config: default
+      UserClient:
+        base-config: default
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: Handles flight bookings, passenger management, and booking lifecycle
+    version: 1.0.0
+    environment: development
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, circuitbreakers, circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  info:
+    env:
+      enabled: true        # required since Spring Boot 2.6 to expose info.* properties
+    java:
+      enabled: true        # shows JVM version
+    os:
+      enabled: true        # shows OS details
+  health:
+    circuitbreakers:
+      enabled: true
