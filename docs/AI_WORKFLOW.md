@@ -17,12 +17,13 @@
 
 ```text
 ① DESIGN    discuss the problem → agree DESIGN.md section by section → PLAN.md (scope, decisions)
-② ORDER     LEARNING-PATH.md: build order, one concept per step
+            (smaller feature: /add-feature writes docs/plans/YYYY-MM-DD-<name>.md instead)
+② ORDER     LEARNING-PATH.md: build order, one concept per step (feature: the plan's task list)
 ③ OVERVIEW  /implement-step → Claude summarises the step → developer approves
 ④ BUILD     Claude writes the code on a feature branch, with a purpose comment at each new piece
 ⑤ VERIFY    /verify-build (impact scan + compile) · concurrency-reviewer / code-reviewer agents
-⑥ RECORD    /progress-update → PLAN ticked, PROGRESS entry, CHANGELOG when merged
-⑦ SHIP      /ship-pr → small commits, push, PR → developer reviews and merges
+⑥ RECORD    /progress-update → PLAN ticked, PROGRESS entry (feature: its plan file), CHANGELOG when merged
+⑦ SHIP      /ship-pr → diff reviewed by the developer → small commits, push, PR → developer merges
 ```
 
 Nothing is coded before ③ is approved. Nothing is called done before ⑤ has actually run.
@@ -36,6 +37,7 @@ Nothing is coded before ③ is approved. Nothing is called done before ⑤ has a
 | Goals, decisions, scope | `docs/booking-refactor/PLAN.md` |
 | Build order + lessons | `docs/booking-refactor/LEARNING-PATH.md` |
 | What's done, what's next | `docs/booking-refactor/PROGRESS.md` ("Current status" at the top) |
+| Feature plans + status | `docs/plans/YYYY-MM-DD-<name>.md`, index in `docs/plans/README.md` |
 | Architecture decisions | `docs/decisions.md` |
 | Release notes | `CHANGELOG.md` |
 
@@ -45,7 +47,8 @@ A new session needs only `CLAUDE.md` + PROGRESS "Current status" + the current s
 
 | Name | Type | When |
 |---|---|---|
-| `implement-step` | skill | "Start the next step": overview → approval → code → self-check |
+| `implement-step` | skill | "Start the next step" of the booking refactor: overview → approval → code → self-check |
+| `add-feature` | skill | Any other feature: plan → approval → task by task → review → ship |
 | `verify-build` | skill | After any change: grep impact across BE/FE/config, `mvn compile`, `npm run build` |
 | `progress-update` | skill | End of a step: tick PLAN, write PROGRESS, CHANGELOG |
 | `ship-pr` | skill | Work verified: commit in small steps, push, draft the PR |
