@@ -2,6 +2,8 @@
 
 A production-grade **Airline Global Distribution System (GDS)** built with Spring Boot microservices, event-driven architecture, and cloud-native patterns, plus a React (Vite) web frontend. The platform covers the complete airline booking lifecycle — from flight search and seat selection through payment processing and passenger notifications.
 
+> **Built with Claude Code.** This project is developed with an AI-assisted workflow: designs are agreed section by section, every step is approved before code is written, and every change is verified before it is committed. See [docs/AI_WORKFLOW.md](docs/AI_WORKFLOW.md) for the loop, and [docs/booking-refactor/](docs/booking-refactor/) for a full worked example (booking saga: idempotency, row locks, deadlock avoidance, transactional outbox).
+
 ---
 
 ## Table of Contents
