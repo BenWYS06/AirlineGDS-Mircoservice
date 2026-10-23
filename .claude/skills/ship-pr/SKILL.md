@@ -9,18 +9,21 @@ description: Commits finished work in small logical commits, pushes the branch a
 - Work must be on a feature branch (`feat/…`, `fix/…`, `docs/…`, `chore/…`), never directly on `main`.
 - `git status` and `git diff`: confirm only intended files changed. Never commit `.env`, `target/`, `node_modules/`.
 
-## 2. Commit
+## 2. Show the diff, then STOP
+List the changed files with a one-line summary each and the planned commits (message + files). **Wait for the user's OK** before committing.
+
+## 3. Commit
 - Stage explicit paths only (`git add <file> <file>`), never `git add .`.
 - Small commits: 1–3 related files each, in dependency order (common-lib → service → frontend).
-- Message format (see CONTRIBUTING.md): `type(scope): summary`, imperative, under 72 chars.
-  e.g. `feat(seat): hold seats with a single conditional update`
+- Message format (see CONTRIBUTING.md): subject `type(scope): summary`, imperative, under 72 chars; then a body of 2–5 lines (wrapped at 72) saying why the change was needed and what it does.
+  e.g. `feat(seat): hold seats with a single conditional update` + body
 
-## 3. Push
+## 4. Push
 ```bash
 git push -u origin <branch>
 ```
 
-## 4. Draft the PR
+## 5. Draft the PR
 Use `.github/pull_request_template.md`:
 - **Summary:** what changed and why (link the build step / DESIGN.md section)
 - **Changes:** bullets per service
