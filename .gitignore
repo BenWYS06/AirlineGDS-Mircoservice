@@ -38,3 +38,4 @@ pnpm-debug.log*
 
 # ===== Tooling =====
 .github/modernize/
+.claude/settings.local.json
