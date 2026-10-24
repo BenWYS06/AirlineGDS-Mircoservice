@@ -1,30 +1,38 @@
 ---
 name: progress-update
-description: Records a finished step - ticks PLAN.md, adds an entry at the top of PROGRESS.md, updates "Current status", and adds a CHANGELOG line when a milestone ships. Use at the end of every build step or work session.
+description: Records finished work in the right place - booking refactor steps go to PLAN.md / PROGRESS.md, other features to their plan file and docs/plans/README.md - and adds a CHANGELOG line when work is merged. Use at the end of every build step, feature or work session.
 ---
 
 # Record progress
 
-## 1. PLAN.md
-Tick the checkboxes of the work that is done. If a new decision was made, add it to "Decisions" (§2).
+First decide which kind of work this was.
 
-## 2. PROGRESS.md
-Add an entry **directly under "Current status"** (newest first):
+## A. Booking refactor step (`/implement-step`)
 
-```markdown
-## YYYY-MM-DD: Build step N, <concept>
+1. **`docs/booking-refactor/PLAN.md`:** tick the checkboxes of the work that is done. New decision → add it to "Decisions" (§2).
+2. **`docs/booking-refactor/PROGRESS.md`:** add an entry **directly under "Current status"** (newest first):
 
-- `path/to/File.java`: what changed and why (one line)
-- ...
-- Decisions: anything decided along the way
-- Verified: what was checked (compile, build, scan), and what was NOT verified
-- Not touched on purpose: anything deferred to a later step
-```
+   ```markdown
+   ## YYYY-MM-DD: Build step N, <concept>
 
-Then update "Current status": step just finished, next step, what is waiting on the user.
+   - `path/to/File.java`: what changed and why (one line)
+   - Decisions: anything decided along the way
+   - Verified: what was checked (compile, build, scan), and what was NOT verified
+   - Not touched on purpose: anything deferred to a later step
+   ```
 
-## 3. CHANGELOG.md
-Only when a build step is merged into `main`: add a short user-facing line under `## Unreleased` (what now works differently, not how).
+   Then update "Current status": step just finished, next step, what is waiting on the user.
 
-## 4. Report
-Show the user the new PROGRESS entry.
+## B. Feature (`/add-feature`)
+
+1. **`docs/plans/YYYY-MM-DD-<feature>.md`:** tick the finished tasks; add a short "Result" section at the end (files changed, verification, anything deferred).
+2. **`docs/plans/README.md`:** update the plan's status (IN PROGRESS / DONE).
+
+Never write feature progress into the refactor's PROGRESS.md.
+
+## C. CHANGELOG (both kinds)
+
+Only when the work is merged into `main`: add a short user-facing line under `## Unreleased` in `CHANGELOG.md` (what now works differently, not how).
+
+## Report
+Show the user what was written.

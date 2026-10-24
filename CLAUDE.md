@@ -17,16 +17,18 @@ Spring Boot 4 microservices (Maven multi-module) + React 19 / Vite frontend. Cov
 3. [docs/booking-refactor/DESIGN.md](docs/booking-refactor/DESIGN.md): the agreed design (wins over PLAN where they differ).
 4. [docs/booking-refactor/LEARNING-PATH.md](docs/booking-refactor/LEARNING-PATH.md): build order, one concept per step.
 
+**New features outside the refactor:** use `/add-feature`. Plan first in `docs/plans/YYYY-MM-DD-<name>.md`, status index in [docs/plans/README.md](docs/plans/README.md).
+
 How we work with Claude on this repo: [docs/AI_WORKFLOW.md](docs/AI_WORKFLOW.md).
 
 ## Working mode
 
-**Step by step, approved before code.** For every build step:
+**Step by step, approved before code.** For every build step (or feature task):
 1. Give a short overview of the step (what gets written, main points only).
 2. Wait for the user's OK. Never write code for a step before that.
 3. Write the code. At each new piece, add a short comment stating its purpose.
 4. Re-check: compiles, nothing missing for the step, matches DESIGN.md. List the changed files.
-5. Tick the checkbox in PLAN, add an entry at the top of PROGRESS, update "Current status".
+5. Record it with `/progress-update` (refactor → PLAN + PROGRESS; feature → its plan file + `docs/plans/README.md`).
 
 **Stop and ask when:** a change would break an API contract, the task can be read two very different ways, a secret is missing, or an action can't be undone (dropping data, force push).
 
