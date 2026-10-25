@@ -44,7 +44,6 @@ public class BookingResponse {
 
     // Payment details
     private PaymentStatus paymentStatus;
-    private String paymentLink;
 
     private Long fareId;
     private String fareName;
