@@ -27,14 +27,15 @@ public class LocalUserResolver {
             @Value("${security.internal-api-key}") String internalApiKey,
             @Value("${security.user-cache-ttl:PT5M}") Duration cacheTtl
     ) {
-        this.userServiceClient = restClientBuilder.baseUrl(userServiceBaseUrl).build();
+        this.userServiceClient = restClientBuilder.baseUrl(userServiceBaseUrl).build();  // userServiceBaseUrl this not real url , this also call eureka to get real service's host:port
         this.internalApiKey = internalApiKey;
         this.users = Caffeine.newBuilder()
                 .maximumSize(10_000)
                 .expireAfterWrite(cacheTtl)
                 .build();
     }
-
+    
+    // if available will get , opposite call and cache the method's response 
     public ResolvedUserResponse resolve(KeycloakUserResolveRequest request) {
         return users.get(request, this::resolveFromUserService);
     }
