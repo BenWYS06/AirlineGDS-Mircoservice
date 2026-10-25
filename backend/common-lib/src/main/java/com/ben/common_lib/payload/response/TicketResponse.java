@@ -29,6 +29,9 @@ public class TicketResponse {
     private String passengerLastName;
     private String passengerEmail;
 
+    // Seat (seat-service SeatInstance id) assigned to this passenger
+    private Long seatInstanceId;
+
     // Payment details
     private Long paymentId;
     private Double paymentAmount;

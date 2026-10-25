@@ -19,6 +19,10 @@ public class SeatHoldRequest {
     @NotNull
     private Long bookingId;
 
+    // The flight being booked: seat-service rejects seats that belong to another flight instance
+    @NotNull
+    private Long flightInstanceId;
+
     @NotEmpty
     private List<Long> seatInstanceIds;
 }

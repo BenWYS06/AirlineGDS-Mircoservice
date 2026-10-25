@@ -54,6 +54,7 @@ public class UserContextGatewayFilter {
                 jwt.getClaimAsString("preferred_username"),
                 email);
 
+        // Call user-service to get or insert User
         KeycloakUserResolveRequest resolveRequest = new KeycloakUserResolveRequest(
                 jwt.getSubject(), email, fullName, roles);
         ResolvedUserResponse localUser = localUserResolver.resolve(resolveRequest);
@@ -61,6 +62,7 @@ public class UserContextGatewayFilter {
             roles.add(localUser.role().name());
         }
 
+        //Attached real user's info to send request into Service to handle
         return ServerRequest.from(request)
                 .headers(headers -> {
                     headers.remove(TrustedHeaders.USER_ID);
