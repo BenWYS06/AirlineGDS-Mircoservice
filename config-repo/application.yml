@@ -1,0 +1,25 @@
+# =============================================================================
+# SHARED DEFAULT CONFIG (applied to ALL microservices)
+# =============================================================================
+# This file is loaded by EVERY service that connects to Config Server.
+# Put only COMMON settings here. Service-specific settings go in
+# flight-service.yml, booking-service.yml, etc.
+#
+# IMPORTANT: Do NOT set server.port or spring.application.name here —
+# those are service-specific and would override each service's own values.
+# =============================================================================
+
+# All microservices register with Eureka for service discovery
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+# Common JPA settings shared across all services
+spring:
+  jpa:
+    hibernate:
+      # Tables are created/changed by each service's Flyway migrations (db/migration).
+      # Hibernate only checks that the schema matches the entities.
+      ddl-auto: validate
+    show-sql: false
