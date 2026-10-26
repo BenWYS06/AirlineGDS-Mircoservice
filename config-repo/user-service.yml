@@ -1,0 +1,10 @@
+server:
+  port: 5001
+
+spring:
+  datasource:
+    # Each service should have its OWN database for microservice isolation.
+    # Previously this pointed to flight_db (copy-paste error).
+    url: jdbc:mysql://localhost:3306/airline_user
+    username: root
+    password: ${DB_PASSWORD:root}
