@@ -1,0 +1,20 @@
+# =============================================================================
+# FLIGHT SERVICE CONFIG
+# =============================================================================
+# Fetched ONLY by flight-service from Config Server.
+# Common settings (eureka, jpa defaults) come from application.yml automatically.
+# =============================================================================
+
+server:
+  port: 5002
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/airline_flight_db
+    username: root
+    password: ${DB_PASSWORD:root}
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer

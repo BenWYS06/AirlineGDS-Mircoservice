@@ -47,7 +47,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}   # schema is owned by Flyway (db/migration)
 
 security:
   internal-api-key: ${INTERNAL_API_KEY:local-development-only-key}

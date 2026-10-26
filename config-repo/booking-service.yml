@@ -1,0 +1,21 @@
+# =============================================================================
+# BOOKING SERVICE CONFIG
+# =============================================================================
+# Fetched ONLY by booking-service from Config Server.
+# Common settings (eureka, jpa defaults) come from application.yml automatically.
+# =============================================================================
+
+server:
+  port: 5008
+  # Send the ResponseStatusException reason to the client, so the FE can tell different 409s apart
+  # ("seat taken" vs "payment session expired") instead of guessing
+  error:
+    include-message: always
+
+spring:
+  # Booking is the one service on PostgreSQL (partial unique index for idempotent create)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/airline_booking_db
+    username: postgres
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver

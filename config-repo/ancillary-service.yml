@@ -1,0 +1,8 @@
+server:
+  port: 5007
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/airline_ancillary_db
+    username: root
+    password: ${DB_PASSWORD:root}

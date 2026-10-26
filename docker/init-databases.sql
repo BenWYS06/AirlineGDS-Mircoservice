@@ -12,5 +12,5 @@ CREATE DATABASE IF NOT EXISTS airline_location_db;
 CREATE DATABASE IF NOT EXISTS airline_seat_db;
 CREATE DATABASE IF NOT EXISTS airline_pricing_db;
 CREATE DATABASE IF NOT EXISTS airline_ancillary_db;
-CREATE DATABASE IF NOT EXISTS airline_booking_db;
+-- airline_booking_db lives in PostgreSQL (docker-compose.dev.yml: postgres), not here
 CREATE DATABASE IF NOT EXISTS airline_payment_db;

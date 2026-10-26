@@ -1,0 +1,32 @@
+# =============================================================================
+# API GATEWAY CONFIG
+# =============================================================================
+# Fetched ONLY by api-gateway from Config Server.
+# Common settings (eureka, jpa defaults) come from application.yml automatically.
+# =============================================================================
+
+server:
+  port: 5000
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true   # 🔥 VERY IMPORTANT
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "https://*.vercel.app"
+              - "http://localhost:*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
