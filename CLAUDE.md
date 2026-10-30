@@ -62,7 +62,6 @@ How we work with Claude on this repo: [docs/AI_WORKFLOW.md](docs/AI_WORKFLOW.md)
 | booking-service | dynamic | **PostgreSQL** `airline_booking_db` | Saga orchestrator: bookings, passengers, tickets |
 | payment-service | dynamic | MySQL `airline_payment_db` | VNPay: payment URL, IPN, return |
 | notification-service | 8094 | — | Email (Gmail SMTP + Thymeleaf), SMS |
-| subscription-service | dynamic | — | Airline subscriptions |
 
 Infra: Keycloak 8180 · Kafka 9092 (KRaft) · Redis 6379 · MySQL 3306 · PostgreSQL 5432 · frontend 5173.
 
