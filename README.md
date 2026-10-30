@@ -54,8 +54,7 @@ A production-grade **Airline Global Distribution System (GDS)** built with Sprin
 │       ├── ancillary-service/
 │       ├── booking-service/
 │       ├── payment-service/
-│       ├── notification-service/
-│       └── subscription-service/
+│       └── notification-service/
 │
 ├── frontend/                            # React 19 + Vite web app
 │   └── src/
@@ -179,7 +178,6 @@ A production-grade **Airline Global Distribution System (GDS)** built with Sprin
 | **booking-service** | dynamic | `airline_booking_db` | Consumer | Bookings, passengers, tickets, statistics |
 | **payment-service** | dynamic | `airline_payment_db` | Producer | Razorpay/Stripe integration, verification, refunds |
 | **notification-service** | 8094 | — | Consumer | Email (Gmail SMTP / Thymeleaf) + SMS (Twilio) |
-| **subscription-service** | dynamic | — | — | Airline subscription and membership management |
 
 ---
 
