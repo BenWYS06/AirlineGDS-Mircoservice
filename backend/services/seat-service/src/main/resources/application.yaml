@@ -30,10 +30,10 @@ spring:
         group:
           enabled: true
 
-# Seat hold while the user pays. Longer than the VNPay link (15 min) so a last-minute payment
-# still finds its seat; after this a HELD seat counts as free again.
+# Seat hold while the user pays. Outlives the VNPay link (10 min) + IPN grace (2 min) + one
+# expiry-job run, so a last-minute payment still finds its seat; after this a HELD seat counts as free.
 seat:
-  hold-minutes: 20
+  hold-minutes: 15
 
 resilience4j:
   circuitbreaker:
