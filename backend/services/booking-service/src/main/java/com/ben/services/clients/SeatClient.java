@@ -27,6 +27,10 @@ public interface SeatClient {
     @PostMapping("/internal/seat-instances/hold")
     SeatHoldResponse holdSeats(@RequestBody SeatHoldRequest request);
 
+    // Orchestration: booking tells seat-service to book the seats once payment arrived (409 = seats lost)
+    @PostMapping("/internal/seat-instances/bookings/{bookingId}/confirm")
+    Integer confirmSeats(@PathVariable("bookingId") Long bookingId, @RequestBody List<Long> seatInstanceIds);
+
     @PostMapping("/internal/seat-instances/bookings/{bookingId}/release")
     Integer releaseSeats(@PathVariable("bookingId") Long bookingId);
 
