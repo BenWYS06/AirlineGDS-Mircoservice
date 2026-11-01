@@ -24,7 +24,7 @@ public interface SeatInstanceService {
     /** All-or-nothing: holds every seat for the booking, or none (409 if any seat is taken). */
     SeatHoldResponse holdSeats(SeatHoldRequest request);
 
-    /** Payment succeeded: the booking's HELD seats become BOOKED. Returns how many were confirmed. */
+    /** Payment succeeded: all the booking's seats become BOOKED, or 409 if any was lost (nothing changes then). */
     int confirmSeats(Long bookingId, List<Long> seatInstanceIds);
 
     /** Payment failed / booking cancelled: the booking's HELD seats become AVAILABLE again. */
