@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -95,6 +96,17 @@ public class Booking {
     private boolean ticketIssued;
 
     private ContactInfo contactInfo;
+
+    // Idempotency key part: sha256 of the sorted seat ids (unique per live booking, see V2 migration)
+    @Column(name = "seats_hash", length = 64)
+    private String seatsHash;
+
+    // VNPay link + its expiry, stored when the booking reaches AWAITING_PAYMENT; a duplicate request reuses them
+    @Column(name = "checkout_url", length = 2048)
+    private String checkoutUrl;
+
+    @Column(name = "payment_expires_at")
+    private Instant paymentExpiresAt;
 
     // Seats are stored per passenger on Ticket.seatInstanceId; this collects them for the whole booking.
     // Not a mapped property (field access), so Hibernate ignores it.
