@@ -82,6 +82,8 @@ public class BookingMapper {
                 .meals(meals)
                 .seatInstances(seats)
                 .paymentStatus(paymentDTO != null ? paymentDTO.getStatus() : null)
+                .checkoutUrl(booking.getCheckoutUrl())
+                .paymentExpiresAt(booking.getPaymentExpiresAt())
 //                fare details
                 .fareName(fareResponse != null ? fareResponse.getName() : null)
                 .fareBaseFare(fareResponse != null ? fareResponse.getBaseFare() : null)

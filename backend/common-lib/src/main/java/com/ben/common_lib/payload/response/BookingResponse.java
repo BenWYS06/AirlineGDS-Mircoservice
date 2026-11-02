@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class BookingResponse {
 
     // Payment details
     private PaymentStatus paymentStatus;
+    // While AWAITING_PAYMENT: the VNPay link and when it stops working ("Continue payment" in My bookings)
+    private String checkoutUrl;
+    private Instant paymentExpiresAt;
 
     private Long fareId;
     private String fareName;
