@@ -1,10 +1,10 @@
 package com.ben.services;
 
+import com.ben.services.support.IntegrationTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class FlightOpsServiceApplicationTests {
+// Starts the whole service on a real database: Flyway migrations run and Hibernate validates the schema
+class FlightOpsServiceApplicationTests extends IntegrationTest {
 
 	@Test
 	void contextLoads() {
