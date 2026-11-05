@@ -1,4 +1,5 @@
 # Ben Airline — Airline GDS Microservices Platform
+[![Backend CI](https://github.com/BenWYS06/AirlineGDS-Mircoservice/actions/workflows/backend.yml/badge.svg)](https://github.com/BenWYS06/AirlineGDS-Mircoservice/actions/workflows/backend.yml)
 
 A production-grade **Airline Global Distribution System (GDS)** built with Spring Boot microservices, event-driven architecture, and cloud-native patterns, plus a React (Vite) web frontend. The platform covers the complete airline booking lifecycle — from flight search and seat selection through payment processing and passenger notifications.
 
