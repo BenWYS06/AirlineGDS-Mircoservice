@@ -2,7 +2,9 @@ package com.ben.services.clients;
 
 import com.ben.common_lib.payload.response.FlightCabinAncillaryResponse;
 import com.ben.common_lib.payload.response.FlightMealResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,9 +12,10 @@ import java.util.List;
 @Component
 public class AncillaryClientFallback implements AncillaryClient {
 
+    // Prices must never be faked: 0.0 would undercharge the booking. 503 → create compensates, user retries.
     @Override
     public double calculateAncillariesPrice(List<Long> flightCabinAncillaryIds) {
-        return 0.0;
+        throw unavailable();
     }
 
     @Override
@@ -27,6 +30,11 @@ public class AncillaryClientFallback implements AncillaryClient {
 
     @Override
     public Double calculateMealPrice(List<Long> requests) {
-        return 0.0;
+        throw unavailable();
+    }
+
+    private static ResponseStatusException unavailable() {
+        return new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
+                "Pricing is temporarily unavailable. Please retry.");
     }
 }
