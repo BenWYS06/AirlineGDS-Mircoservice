@@ -24,8 +24,8 @@ A service's tests go up once its code is complete on `main`, in a `test/<service
 
 - [x] 1. **api-gateway**: `UserContextGatewayFilter` (trusted headers set, client-sent `X-User-*` stripped), `LocalUserResolver`.
 - [x] 2. **user-service**: extend `UserServiceImplTest`; `InternalApiKeyVerifier`.
-- [ ] 3. **airline-core-service** (ready now): `AirlineServiceImpl`, `AircraftServiceImpl`; context test on Testcontainers.
-- [ ] 4. **flight-ops-service** (ready now): `FlightSearchServiceImpl`, `FlightInstanceServiceImpl`, `FlightScheduleServiceImpl`, `FlightServiceImpl`; context test on Testcontainers.
+- [x] 3. **airline-core-service**: `AirlineServiceImpl`, `AircraftServiceImpl`; context test on Testcontainers.
+- [x] 4. **flight-ops-service**: `FlightSearchServiceImpl`, `FlightInstanceServiceImpl`, `FlightScheduleServiceImpl`, `FlightServiceImpl`; context test on Testcontainers.
 - [ ] 5. **seat-service** (after build step 6): `SeatInstanceServiceImpl`, `SeatMapServiceImpl`, `SeatServiceImpl`; with the seat concurrency tests.
 - [ ] 6. **booking-service** (after build step 6): `BookingServiceImpl`, `BookingCompensator`, `PaymentEventListener`, `BookingExpiryJob`; with the saga concurrency tests.
 - [ ] 7. **payment-service** (after build step 6): `VnPayService` (signature, amount, RspCode mapping), `PaymentServiceImpl`; with the IPN concurrency tests.
@@ -42,3 +42,5 @@ Each task also adds the service to the test step in `backend.yml` if it isn't th
 ## Result
 
 Plan written 2026-11-05. Tasks 1 and 2 done the same day: 21 new tests, run on a clean copy of `main`; one rule per class broken on purpose and caught by its test.
+
+Tasks 3 and 4 done 2026-11-06: 59 new unit tests, run on a clean copy of `main`; one rule per class broken on purpose and caught. The two context tests move to Testcontainers; Docker was off, so CI is their first run.
