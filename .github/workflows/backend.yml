@@ -38,10 +38,8 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # booking and payment wait for their event producers (refactor build step 6, outbox).
-      # That PR removes this -pl filter, so from then on every module is compiled.
       - name: Compile modules
-        run: mvn -B -ntp compile -pl '!services/booking-service,!services/payment-service'
+        run: mvn -B -ntp compile
 
       # Modules whose tests are ready; context tests start MySQL with Testcontainers. The others join per the plan (stage 4)
       - name: Run tests

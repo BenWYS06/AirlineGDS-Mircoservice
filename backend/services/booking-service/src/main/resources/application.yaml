@@ -8,6 +8,13 @@ spring:
   application:
     name: booking-service
 
+  # Two scheduler threads: OutboxRelay can block on Kafka (down → send waits), and that must not stall
+  # BookingExpiryJob, which runs on the same scheduler
+  task:
+    scheduling:
+      pool:
+        size: 2
+
   config:
     import: optional:configserver:http://localhost:8888
 
